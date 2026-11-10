@@ -1,0 +1,412 @@
+/* Design tokens: change these values to restyle the whole site. */
+:root {
+  /* Color */
+  --wall: #fbf3f1;          /* page background, like a kitchen wall */
+  --cream: #fffaf6;         /* inputs, cards, popup */
+  --enamel: #f3d1d3;        /* the pink fridge body */
+  --enamel-light: #fce9e9;  /* glossy highlight */
+  --enamel-shade: #e3b3b8;  /* edges, seams, borders */
+  --brass: #c49a4c;         /* handles and main button */
+  --brass-light: #ecd08f;
+  --brass-dark: #8a6224;
+  --ink: #4a2a2f;           /* text */
+  --ink-soft: #7d5b60;      /* secondary text */
+  --berry: #a8394f;         /* magnet accent */
+
+  /* Type */
+  --badge: "Yellowtail", "Brush Script MT", cursive;
+  --body: "Figtree", "Helvetica Neue", Arial, sans-serif;
+
+  /* Shape */
+  --radius-fridge: 56px;
+  --radius-card: 24px;
+  --radius-pill: 999px;
+
+  /* Spacing */
+  --space-s: 12px;
+  --space-m: 24px;
+  --space-l: 48px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--wall);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+h1, h2, h3 { font-weight: 700; line-height: 1.12; letter-spacing: -0.015em; }
+
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+a { color: inherit; }
+
+
+/* ---------- The fridge ---------- */
+
+/* Stops the open door from causing sideways scrolling on narrow screens. */
+html, body { overflow-x: clip; }
+
+/* A soft left-to-right shine makes the enamel look curved and glossy. */
+.fridge, .door {
+  background: linear-gradient(100deg, var(--enamel-light) 0%, var(--enamel) 28%, var(--enamel) 72%, var(--enamel-shade) 100%);
+}
+
+.fridge {
+  position: relative;
+  max-width: 780px;
+  margin: var(--space-l) auto 0;
+  padding-bottom: 18px;
+  border-radius: var(--radius-fridge) var(--radius-fridge) 32px 32px;
+  box-shadow: 0 30px 50px -30px rgb(74 42 47 / 45%);
+}
+
+.freezer {
+  position: relative;
+  padding: var(--space-l) 56px 40px;
+  /* The seam between the freezer and the fridge door. */
+  border-bottom: 3px solid var(--enamel-shade);
+  box-shadow: 0 2px 0 var(--enamel-light);
+}
+
+/* The space behind the door. Perspective makes the door swing in 3D. */
+.cabinet {
+  position: relative;
+  perspective: 1800px;
+}
+
+/* Inside the fridge: cool white walls, a light at the top, glass shelves. */
+.inside {
+  min-height: 400px;
+  margin: 0 14px;
+  padding: 40px 42px 44px;
+  border-radius: 10px;
+  background:
+    radial-gradient(ellipse at 50% 0%, #fffdf3 0%, transparent 60%),
+    linear-gradient(180deg, #f7f6f2, #ecebe6);
+  box-shadow: inset 0 0 0 6px var(--cream), inset 0 10px 30px rgb(74 42 47 / 12%);
+}
+
+.shelf {
+  padding-bottom: 14px;
+  border-bottom: 6px solid rgb(176 214 222 / 55%);
+}
+
+.close-door {
+  float: right;
+  margin: -16px -18px 12px 12px;
+  padding: 6px 14px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 16px;
+  text-decoration: underline;
+}
+
+.close-door:hover { color: var(--ink); }
+
+.door {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 66px 40px 44px;
+  border: 0;
+  border-radius: 6px;
+  text-align: left;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transition: transform 800ms cubic-bezier(0.25, 0.9, 0.3, 1.05);
+}
+
+.door-label {
+  color: var(--ink-soft);
+  font-size: 20px;
+  font-weight: 500;
+  backface-visibility: hidden;
+}
+
+.door:hover .door-label { color: var(--ink); }
+.door:focus-visible { outline-offset: -8px; }
+
+/* Open: the door swings out on its left hinge. */
+.fridge.is-open .door {
+  transform: rotateY(-108deg);
+  box-shadow: inset -12px 0 20px rgb(74 42 47 / 15%);
+}
+
+.fridge.is-open .door-label,
+.fridge.is-open .door .handle { visibility: hidden; transition: visibility 0s 300ms; }
+
+/* Brass handles, mounted top right of each door. */
+.handle {
+  position: absolute;
+  top: 36px;
+  right: 40px;
+  width: 120px;
+  height: 14px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(180deg, var(--brass-light), var(--brass) 55%, var(--brass-dark));
+  box-shadow: 0 4px 6px -2px rgb(74 42 47 / 35%);
+}
+
+.badge {
+  margin: 0 0 var(--space-m);
+  color: var(--brass-dark);
+  font-family: var(--badge);
+  font-size: 36px;
+  line-height: 1;
+  text-shadow: 0 1px 0 var(--brass-light);
+}
+
+h1 { margin: 0; max-width: 13ch; font-size: clamp(38px, 7vw, 64px); }
+
+.intro { margin: var(--space-s) 0 0; color: var(--ink-soft); font-size: 20px; }
+
+/* The vent at the bottom of the fridge. */
+.grille {
+  height: 30px;
+  margin: 18px 56px 0;
+  border-radius: 8px;
+  background: repeating-linear-gradient(90deg, var(--enamel-shade) 0 6px, transparent 6px 14px);
+  opacity: 0.8;
+}
+
+
+/* ---------- Form ---------- */
+
+.add-form label { display: block; margin-bottom: 8px; font-weight: 700; }
+
+.add-row { display: flex; gap: 10px; max-width: 540px; }
+
+input {
+  flex: 1;
+  min-width: 0;
+  padding: 13px 20px;
+  border: 2px solid var(--enamel-shade);
+  border-radius: var(--radius-pill);
+  background: var(--cream);
+}
+
+input:focus-visible { border-color: var(--ink); outline: none; }
+
+.button-primary, .button-secondary {
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+}
+
+.button-secondary {
+  padding: 12px 24px;
+  border: 2px solid var(--ink);
+  background: transparent;
+}
+
+.button-secondary:hover { background: var(--cream); }
+
+.button-primary {
+  padding: 15px 34px;
+  border: 0;
+  background: linear-gradient(180deg, var(--brass-light), var(--brass));
+  box-shadow: inset 0 -3px 0 var(--brass-dark), 0 6px 12px -6px rgb(74 42 47 / 50%);
+  font-size: 20px;
+}
+
+.button-primary:hover { background: linear-gradient(180deg, #f4dda4, var(--brass-light)); }
+.button-primary:active { box-shadow: inset 0 -1px 0 var(--brass-dark); transform: translateY(2px); }
+.button-primary:disabled { opacity: 0.6; cursor: progress; }
+
+
+/* ---------- Ingredient magnets ---------- */
+
+.magnets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 14px;
+  min-height: 8px;
+  margin: var(--space-m) 0 20px;
+  padding: 0;
+  list-style: none;
+}
+
+.magnet {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 8px 7px 18px;
+  border-radius: var(--radius-pill);
+  background: var(--cream);
+  box-shadow: 0 3px 0 rgb(74 42 47 / 18%);
+  font-size: 19px;
+  font-weight: 700;
+  transform: rotate(-1.5deg);
+  animation: stick 180ms ease-out;
+}
+
+.magnet:nth-child(3n + 2) { background: var(--berry); color: var(--cream); transform: rotate(1deg); }
+.magnet:nth-child(3n) { background: var(--brass-light); transform: rotate(-0.5deg); }
+
+.magnet button {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(74 42 47 / 10%);
+  color: inherit;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.magnet:nth-child(3n + 2) button { background: rgb(255 255 255 / 22%); }
+
+@keyframes stick {
+  from { opacity: 0; scale: 1.15; }
+  to { opacity: 1; scale: 1; }
+}
+
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 28px;
+  color: var(--ink-soft);
+}
+
+.suggestions button {
+  padding: 4px 14px;
+  border: 1.5px solid var(--enamel-shade);
+  border-radius: var(--radius-pill);
+  background: var(--enamel-light);
+  color: var(--ink);
+}
+
+.suggestions button:hover { border-color: var(--ink); }
+
+
+/* ---------- Results ---------- */
+
+main { max-width: 1120px; min-height: 120px; margin: 0 auto; padding: var(--space-l) var(--space-m) 64px; }
+
+.status { max-width: 65ch; margin: 0 0 var(--space-m); font-size: 21px; font-weight: 500; }
+
+.results {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 40px 28px;
+}
+
+.recipe-card {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+}
+
+.recipe-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-card);
+  background: var(--enamel);
+}
+
+.recipe-card h2 { margin: 14px 0 6px; font-size: 23px; }
+.recipe-card:hover h2 { color: var(--brass-dark); text-decoration: underline; text-decoration-thickness: 2px; }
+.recipe-card p { margin: 0; color: var(--ink-soft); font-size: 17px; }
+
+
+/* ---------- Recipe popup ---------- */
+
+.recipe-dialog {
+  width: min(760px, calc(100% - 24px));
+  max-height: calc(100% - 32px);
+  padding: 0;
+  border: 0;
+  border-radius: 32px;
+  background: var(--cream);
+  color: var(--ink);
+}
+
+.recipe-dialog::backdrop { background: rgb(74 42 47 / 60%); }
+
+.recipe-dialog > div { position: relative; }
+
+.recipe-photo { display: block; width: 100%; max-height: 380px; object-fit: cover; }
+
+.recipe-body { padding: 28px 40px 40px; }
+.recipe-body h2 { margin: 0 0 6px; font-size: clamp(30px, 6vw, 42px); }
+.recipe-body h3 { margin: 32px 0 12px; padding-bottom: 8px; border-bottom: 2px solid var(--enamel); font-size: 22px; }
+.recipe-meta { margin: 0; color: var(--ink-soft); }
+
+.close-button {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  padding: 8px 18px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--cream);
+  box-shadow: 0 2px 8px rgb(74 42 47 / 25%);
+  font-weight: 700;
+}
+
+.ingredient-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 4px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ingredient-list li { padding: 5px 0; }
+.ingredient-list .have { font-weight: 700; }
+.ingredient-list .have::before { content: "✓ "; color: var(--brass-dark); }
+
+.steps { margin: 0; padding-left: 1.5em; }
+.steps li { max-width: 65ch; margin-bottom: 14px; padding-left: 4px; }
+.steps li::marker { color: var(--brass-dark); font-weight: 700; }
+
+
+/* ---------- Footer ---------- */
+
+footer { padding: var(--space-m); color: var(--ink-soft); text-align: center; font-size: 16px; }
+
+
+/* ---------- Phones ---------- */
+
+@media (max-width: 640px) {
+  .fridge { margin: 16px 16px 0; border-radius: 40px 40px 24px 24px; }
+  .freezer { padding: 36px 22px 30px; }
+  .inside { margin: 0 8px; padding: 32px 18px 32px; }
+  .door { padding: 50px 22px 32px; }
+  .door-label { font-size: 17px; }
+  .add-row .button-secondary { padding: 12px 18px; }
+  .handle { top: 26px; right: 22px; width: 64px; height: 12px; }
+  .badge { font-size: 30px; }
+  .grille { margin: 14px 22px 0; height: 22px; }
+  .button-primary { width: 100%; }
+  main { padding: 32px 16px 48px; }
+  .recipe-body { padding: 22px 20px 30px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .magnet { animation: none; }
+  .button-primary:active { transform: none; }
+  /* Without motion, the door simply disappears instead of swinging. */
+  .door { transition: none; }
+  .fridge.is-open .door { transform: none; visibility: hidden; }
+}

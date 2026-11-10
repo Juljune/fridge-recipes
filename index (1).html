@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fridge Recipes</title>
+  <meta name="description" content="Open the fridge, add what you have, and find recipes you can cook with it.">
+  <meta name="theme-color" content="#f3d1d3">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700&family=Yellowtail&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- The header is a retro fridge: a freezer on top, and a fridge door that opens. -->
+  <header class="fridge">
+    <section class="freezer">
+      <span class="handle" aria-hidden="true"></span>
+      <p class="badge">Fridge Recipes</p>
+      <h1>What's in your fridge?</h1>
+      <p class="intro">Open the door, add what you have, and find recipes that use it.</p>
+    </section>
+
+    <section class="cabinet">
+      <!-- Inside the fridge. It can't be used until the door is open. -->
+      <div id="inside" class="inside" inert>
+        <button id="close-door" class="close-door" type="button">Close the door</button>
+
+        <form id="ingredient-form" class="add-form">
+          <label for="ingredient-input">Add an ingredient</label>
+          <div class="add-row">
+            <input id="ingredient-input" list="ingredient-options" autocomplete="off" placeholder="Chicken, eggs, spinach...">
+            <datalist id="ingredient-options"></datalist>
+            <button type="submit" class="button-secondary">Add</button>
+          </div>
+        </form>
+
+        <ul id="magnets" class="magnets shelf" aria-label="Ingredients in your fridge"></ul>
+
+        <div id="suggestions" class="suggestions shelf">
+          <span>Try:</span>
+          <button type="button" data-ingredient="Chicken">Chicken</button>
+          <button type="button" data-ingredient="Eggs">Eggs</button>
+          <button type="button" data-ingredient="Rice">Rice</button>
+          <button type="button" data-ingredient="Tomato">Tomato</button>
+        </div>
+
+        <button id="find-button" class="button-primary" type="button">Find recipes</button>
+      </div>
+
+      <!-- The door. It swings open on its left hinge. -->
+      <button id="door" class="door" type="button" aria-expanded="false" aria-controls="inside">
+        <span class="handle" aria-hidden="true"></span>
+        <span class="door-label">Open the fridge</span>
+      </button>
+    </section>
+
+    <div class="grille" aria-hidden="true"></div>
+  </header>
+
+  <main>
+    <p id="status" class="status" role="status"></p>
+    <section id="results" class="results" aria-label="Recipes"></section>
+  </main>
+
+  <dialog id="recipe-dialog" class="recipe-dialog" aria-labelledby="recipe-title">
+    <div id="recipe-content"></div>
+  </dialog>
+
+  <footer>
+    Recipes and photos from <a href="https://www.themealdb.com/">TheMealDB</a>.
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
