@@ -12,6 +12,7 @@
   --ink: #4a2a2f;           /* text */
   --ink-soft: #7d5b60;      /* secondary text */
   --berry: #a8394f;         /* magnet accent */
+  --mint: #bfe6d3;          /* magnet accent, every 4th magnet */
 
   /* Type */
   --badge: "Yellowtail", "Brush Script MT", cursive;
@@ -251,8 +252,9 @@ input:focus-visible { border-color: var(--ink); outline: none; }
   animation: stick 180ms ease-out;
 }
 
-.magnet:nth-child(3n + 2) { background: var(--berry); color: var(--cream); transform: rotate(1deg); }
-.magnet:nth-child(3n) { background: var(--brass-light); transform: rotate(-0.5deg); }
+.magnet:nth-child(4n + 2) { background: var(--berry); color: var(--cream); transform: rotate(1deg); }
+.magnet:nth-child(4n + 3) { background: var(--brass-light); transform: rotate(-0.5deg); }
+.magnet:nth-child(4n) { background: var(--mint); transform: rotate(1.5deg); }
 
 .magnet button {
   width: 30px;
@@ -266,7 +268,7 @@ input:focus-visible { border-color: var(--ink); outline: none; }
   line-height: 1;
 }
 
-.magnet:nth-child(3n + 2) button { background: rgb(255 255 255 / 22%); }
+.magnet:nth-child(4n + 2) button { background: rgb(255 255 255 / 22%); }
 
 @keyframes stick {
   from { opacity: 0; scale: 1.15; }

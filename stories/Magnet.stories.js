@@ -1,11 +1,11 @@
 // The ingredient magnet: one ingredient stuck on the fridge.
 //
 // In style.css the magnet's color depends on its position in the list:
-// 1st cream, 2nd berry, 3rd brass, then it repeats (the :nth-child rules).
+// 1st cream, 2nd berry, 3rd brass, 4th mint, then it repeats (the :nth-child rules).
 // To show one color on its own, this story adds invisible magnets in front
 // of the real one. That way style.css stays exactly as it is.
 
-const COLORS = { Cream: 0, Berry: 1, Brass: 2 };
+const COLORS = { Cream: 0, Berry: 1, Brass: 2, Mint: 3 };
 
 function magnet(label) {
   const item = document.createElement("li");
@@ -44,7 +44,7 @@ export default {
     color: {
       control: "inline-radio",
       options: Object.keys(COLORS),
-      description: "Cream, berry, or brass. On the site this follows the magnet's position.",
+      description: "Cream, berry, brass, or mint. On the site this follows the magnet's position.",
     },
   },
   args: { label: "Chicken", color: "Cream" },
@@ -53,6 +53,7 @@ export default {
 export const Cream = { args: { label: "Chicken", color: "Cream" } };
 export const Berry = { args: { label: "Eggs", color: "Berry" } };
 export const Brass = { args: { label: "Rice", color: "Brass" } };
+export const Mint = { args: { label: "Tomato", color: "Mint" } };
 
 // Several magnets in a row, like on the site. Type ingredients separated by commas.
 export const AllColors = {
