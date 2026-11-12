@@ -1,0 +1,15 @@
+{
+  "name": "fridge-recipes",
+  "private": true,
+  "description": "Tools for working on the site. The site itself needs none of this: it's plain HTML, CSS, and JavaScript.",
+  "type": "module",
+  "scripts": {
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "devDependencies": {
+    "@storybook/html-vite": "10.6.7",
+    "storybook": "10.6.7",
+    "vite": "8.3.8"
+  }
+}

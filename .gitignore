@@ -1,0 +1,8 @@
+# Installed tools. Recreate them with: npm install
+node_modules/
+
+# Storybook's build output. GitHub Actions builds it fresh.
+storybook-static/
+
+# The folder GitHub Actions publishes. Only made during the build.
+_site/

@@ -1,0 +1,71 @@
+# Publishes the site and Storybook to GitHub Pages.
+#
+#   https://juljune.github.io/fridge-recipes/            the live site (your files, unchanged)
+#   https://juljune.github.io/fridge-recipes/storybook/  Storybook
+#
+# It runs every time something lands on the main branch.
+# You can also start it by hand: Actions tab > "Publish site and Storybook" > Run workflow.
+
+name: Publish site and Storybook
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Permission to publish to GitHub Pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# If two runs start close together, finish the first before starting the next.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install Storybook
+        run: npm ci
+
+      - name: Build Storybook
+        run: npm run build-storybook -- --output-dir storybook-static --disable-telemetry
+
+      # Put everything in one folder, _site, in the shape it will have online.
+      # Your site files are copied exactly as they are (including any images you
+      # add later). Only the Storybook tooling is left out, since visitors don't need it.
+      - name: Put the site and Storybook together
+        run: |
+          mkdir _site
+          git ls-files -z \
+            | grep -zvE '^(\.github|\.storybook|stories)/|^(package\.json|package-lock\.json|\.gitignore)$' \
+            | xargs -0 cp --parents -t _site
+          cp -r storybook-static _site/storybook
+
+      - name: Upload for GitHub Pages
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
