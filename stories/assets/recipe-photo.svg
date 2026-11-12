@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <!-- A stand-in recipe photo for Storybook: a bowl seen from above.
+       Uses only colors from the tokens in style.css. -->
+  <title>Placeholder recipe photo</title>
+  <rect width="400" height="300" fill="#f3d1d3"/>
+  <circle cx="200" cy="150" r="112" fill="#e3b3b8"/>
+  <circle cx="200" cy="150" r="100" fill="#fffaf6"/>
+  <circle cx="200" cy="150" r="78" fill="#ecd08f"/>
+  <circle cx="172" cy="128" r="18" fill="#a8394f"/>
+  <circle cx="230" cy="140" r="15" fill="#c49a4c"/>
+  <circle cx="206" cy="184" r="20" fill="#a8394f"/>
+  <circle cx="160" cy="174" r="12" fill="#8a6224"/>
+  <circle cx="240" cy="182" r="10" fill="#fce9e9"/>
+</svg>
