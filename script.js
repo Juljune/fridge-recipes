@@ -152,11 +152,57 @@ suggestions.addEventListener("click", (event) => {
   if (ingredient) addIngredient(ingredient);
 });
 
+// Removing a magnet: it pops with a little explosion, then leaves the fridge.
+const POP_MS = 450;
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+function explode(magnet) {
+  const styles = getComputedStyle(document.documentElement);
+  const colors = [
+    getComputedStyle(magnet).backgroundColor,
+    styles.getPropertyValue("--brass-light"),
+    styles.getPropertyValue("--cream"),
+    styles.getPropertyValue("--berry"),
+    styles.getPropertyValue("--mint"),
+  ];
+  const x = magnet.offsetLeft + magnet.offsetWidth / 2;
+  const y = magnet.offsetTop + magnet.offsetHeight / 2;
+
+  const ring = document.createElement("span");
+  ring.className = "spark spark-ring";
+  ring.style.left = `${x}px`;
+  ring.style.top = `${y}px`;
+  magnets.append(ring);
+
+  for (let i = 0; i < 16; i++) {
+    const angle = (i / 16) * Math.PI * 2 + (i % 3) * 0.2;
+    const distance = 70 + ((i * 37) % 60);
+    const size = 6 + ((i * 5) % 9);
+    const spark = document.createElement("span");
+    spark.className = "spark";
+    spark.style.cssText = `left: ${x}px; top: ${y}px; width: ${size}px; height: ${size}px; background: ${colors[i % 2 === 0 ? 0 : (i % 4) + 1]}; --dx: ${Math.round(Math.cos(angle) * distance)}px; --dy: ${Math.round(Math.sin(angle) * distance)}px; animation-duration: ${POP_MS + (i % 4) * 60}ms;`;
+    magnets.append(spark);
+  }
+  setTimeout(() => magnets.querySelectorAll(".spark").forEach((spark) => spark.remove()), POP_MS + 300);
+}
+
 magnets.addEventListener("click", (event) => {
   const index = event.target.dataset.index;
   if (index === undefined) return;
-  fridge.splice(Number(index), 1);
-  renderMagnets();
+  const magnet = event.target.closest(".magnet");
+  if (magnet.classList.contains("is-popping")) return;
+
+  // Remove by name, so the right one goes even if another is popping at the same time.
+  const item = fridge[Number(index)];
+  const remove = () => {
+    fridge.splice(fridge.indexOf(item), 1);
+    renderMagnets();
+  };
+
+  if (reduceMotion.matches) return remove();
+  magnet.classList.add("is-popping");
+  explode(magnet);
+  setTimeout(remove, POP_MS);
 });
 
 
